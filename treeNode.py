@@ -27,3 +27,13 @@ class treeNode:
         print ('  ' * ind, self.name, ' ', self.count)
         for child in self.children.values():
             child.disp(ind + 1)
+
+
+if __name__ == '__main__':
+    rootNode = treeNode('这是父节点',9,None)
+    rootNode.children['这是子节点'] =  treeNode('这是子节点',13,None)
+    rootNode.disp()
+    rootNode.children['这是另一个子节点'] = treeNode('这是另一个子节点', 3, None)
+    rootNode.disp()
+    print(rootNode.children)
+    print(rootNode.parent)

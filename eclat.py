@@ -10,11 +10,9 @@ type = sys.getfilesystemencoding()
 
 
 def eclat(prefix, items, min_support, freq_items):
-    print("prefix", prefix)
-    print("items", items)
     while items:
         # 初始遍历单个的元素是否是频繁
-        print("5555555555555555555")
+        #print("5555555555555555555")
         key, item = items.pop()
         key_support = len(item)
         if key_support >= min_support:
@@ -26,7 +24,7 @@ def eclat(prefix, items, min_support, freq_items):
                 if len(new_item) >= min_support:
                     suffix.append((other_key, new_item))
             eclat(prefix+[key], sorted(suffix, key=lambda item: len(item[1]), reverse=True), min_support, freq_items)
-    print("6666666666666666666")
+    #print("6666666666666666666")
     return freq_items
 
 
@@ -47,6 +45,6 @@ def eclat_zc(data_set, min_support=1):
                 data[item] = set()
             data[item].add(trans_num)
     freq_items = {}
-    print("444444444444444444444444")
+    #print("444444444444444444444444")
     freq_items = eclat([], sorted(data.items(), key=lambda item: len(item[1]), reverse=True), min_support, freq_items)
     return freq_items

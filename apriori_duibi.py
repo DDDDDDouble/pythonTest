@@ -5,6 +5,10 @@ Created on Sat Sep  7 18:41:39 2019
 @author: Li Weisheng
 """
 
+def loadDataSet():
+    dataSet = [[1,3,4],[2,3,5],[1,2,3,5],[2,5]]
+    return dataSet
+
 
 def init_c1(data_set_dict, min_support):
     c1 = []
@@ -15,7 +19,7 @@ def init_c1(data_set_dict, min_support):
     # 优化初始的集合，使不满足最小支持度的直接排除
     c1 = [[k] for (k, v) in freq_dic.items() if v >= min_support]
     c1.sort()
-    return map(frozenset, c1)
+    return list(map(frozenset, c1))
 
 
 def scan_data(data_set, ck, min_support, freq_items):
@@ -40,7 +44,7 @@ def scan_data(data_set, ck, min_support, freq_items):
         if support >= min_support:
             ret_list.insert(0, key)  # 将满足最小支持度的项存入集合
             freq_items[key] = support  #
-    return ret_list
+    return ret_list, freq_items
 
 
 def apriori_gen(lk, k):
@@ -63,7 +67,7 @@ def apriori_gen(lk, k):
     return ret_list
 
 
-def apriori_zc(data_set, data_set_dict, min_support=5):
+def apriori_zc(data_set, data_set_dict, min_support):
     """
     Apriori算法过程
     :param data_set: 数据集
@@ -71,15 +75,28 @@ def apriori_zc(data_set, data_set_dict, min_support=5):
     :return:
     """
     c1 = init_c1(data_set_dict, min_support)
+    print('c1 ', c1)
     data = map(set, data_set)  # 将dataSet集合化，以满足scanD的格式要求
     freq_items = {}
-    l1 = scan_data(data, c1, min_support, freq_items)  # 构建初始的频繁项集
+    l1, freq_items = scan_data(data, c1, min_support, freq_items)  # 构建初始的频繁项集
+    print('l1 ', l1)
+    print('frequ_items ', freq_items)
     l = [l1]
+    print('l ', l)
+    print('l[0] ', l[0])
     # 最初的L1中的每个项集含有一个元素，新生成的项集应该含有2个元素，所以 k=2
     k = 2
     while len(l[k - 2]) > 0:
+        print('len( l[ k - 2 ] ) ', len(l[k - 2]), ' ', k - 2, '->', l[k - 2])
+        print(' l[k - 2] ', l[k - 2])
         ck = apriori_gen(l[k - 2], k)
+        print('ck ', ck)
         lk = scan_data(data, ck, min_support, freq_items)
         l.append(lk)
         k += 1  # 新生成的项集中的元素个数应不断增加
+    print("over")
     return freq_items
+
+if __name__ == '__main__':
+    dataSet = loadDataSet()
+    print(dataSet)
